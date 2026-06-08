@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <radialGradient id="glow" cx="67%" cy="72%" r="64%">
+      <stop offset="0" stop-color="#27D7FF" stop-opacity="0.82"/>
+      <stop offset="0.38" stop-color="#126DFF" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#050912" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bg" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#171C2B"/>
+      <stop offset="0.5" stop-color="#060A12"/>
+      <stop offset="1" stop-color="#02040A"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="25" y1="14" x2="41" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#50F6FF"/>
+      <stop offset="1" stop-color="#2F7BFF"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="text-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1.2" stdDeviation="0.7" flood-color="#000000" flood-opacity="0.95"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="1.1" flood-color="#38E8FF" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect width="48" height="48" rx="13" fill="url(#bg)"/>
+  <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#glow)"/>
+  <path d="M8 34c7.5-8.5 14.2-10.8 32-11.2v13.6C28.5 39.8 17 39.6 8 34Z" fill="#0EA5E9" opacity="0.28"/>
+  <path d="M7 15.5c7.6-3.8 19.3-3.1 34 1.8" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="2"/>
+  <g filter="url(#text-glow)" font-family="Arial, Helvetica, sans-serif" font-weight="900">
+    <text x="23.3" y="23.6" text-anchor="middle" fill="#092033" font-size="10.2" letter-spacing="-0.4">CODE</text>
+    <text x="22.8" y="23.1" text-anchor="middle" fill="#1C7EA3" font-size="10.2" letter-spacing="-0.4">CODE</text>
+    <text x="22.2" y="22.4" text-anchor="middle" fill="#FFFFFF" stroke="#CFFBFF" stroke-width="0.25" font-size="10.2" letter-spacing="-0.4">CODE</text>
+    <text x="27" y="32.7" text-anchor="middle" fill="#061A2A" font-size="8.8" letter-spacing="-0.45">FORGES</text>
+    <text x="26.5" y="32.2" text-anchor="middle" fill="#176FB5" font-size="8.8" letter-spacing="-0.45">FORGES</text>
+    <text x="25.9" y="31.5" text-anchor="middle" fill="url(#cyan)" stroke="#BFF8FF" stroke-width="0.2" font-size="8.8" letter-spacing="-0.45">FORGES</text>
+  </g>
+</svg>
