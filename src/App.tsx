@@ -15,6 +15,15 @@ import Account from "./pages/Account";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
+import Affiliate from "./pages/Affiliate";
+import Blog from "./pages/Blog";
+import Changelog from "./pages/Changelog";
+import DemoGallery from "./pages/DemoGallery";
+import FAQ from "./pages/FAQ";
+import Guide from "./pages/Guide";
+import LicenseTerms from "./pages/LicenseTerms";
+import Reviews from "./pages/Reviews";
+import SystemStatus from "./pages/SystemStatus";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +41,15 @@ const App = () => (
             <Route element={<SiteLayout />}>
               <Route path="/" element={<Index />} />
               <Route path="/catalog" element={<Catalog />} />
+              <Route path="/guide" element={<Guide />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/license" element={<LicenseTerms />} />
+              <Route path="/reviews" element={<Reviews />} />
+              <Route path="/changelog" element={<Changelog />} />
+              <Route path="/demo-gallery" element={<DemoGallery />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/status" element={<SystemStatus />} />
+              <Route path="/affiliate" element={<Affiliate />} />
               <Route path="/product/:slug" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />

@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ArrowRight, Code2, Layers, Loader2, Sparkles, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
+  Code2,
+  CreditCard,
+  Download,
+  Layers,
+  Loader2,
+  MessageCircle,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Zap,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { type CatalogProduct } from "@/data/products";
@@ -25,6 +39,19 @@ const features = [
   { icon: Zap, title: "Tối ưu performance", desc: "Lazy load, code-split, prefers-reduced-motion fallback sẵn có." },
   { icon: Layers, title: "Design system", desc: "Tokens HSL, dark-first, fully theme-able qua CSS variables." },
   { icon: Code2, title: "TypeScript first", desc: "Strict types, props documented, Storybook stories." },
+];
+
+const purchaseSteps = [
+  { icon: CreditCard, title: "Tạo đơn", desc: "Nhận nội dung chuyển khoản riêng theo mã 4 số." },
+  { icon: CheckCircle2, title: "Xác nhận", desc: "Đơn chỉ tính là thanh toán khi tiền về tài khoản." },
+  { icon: Download, title: "Tải source", desc: "File source mở khóa trong trang tài khoản sau khi đã thanh toán." },
+  { icon: MessageCircle, title: "Contact inbox", desc: "Sản phẩm cần báo giá sẽ chuyển sang trao đổi qua Discord." },
+];
+
+const trustLinks = [
+  { icon: BookOpen, title: "Hướng dẫn mua hàng", desc: "Xem rõ từng bước tạo đơn, chuyển khoản và nhận source.", to: "/guide" },
+  { icon: ShieldCheck, title: "License rõ ràng", desc: "Quyền dùng Personal/Team và các giới hạn khi bán source.", to: "/license" },
+  { icon: Star, title: "Đánh giá khách hàng", desc: "Khu vực feedback sau khi khách đã mua sản phẩm.", to: "/reviews" },
 ];
 
 const formatCount = (value: number) => {
@@ -121,6 +148,59 @@ const Index = () => {
               <h3 className="font-display font-semibold mb-1">{f.title}</h3>
               <p className="text-sm text-muted-foreground">{f.desc}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="container pb-20">
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-2xl border border-border bg-gradient-card p-8">
+            <div className="text-xs font-mono text-primary mb-2 uppercase tracking-widest">Quy trình</div>
+            <h2 className="font-display text-3xl font-bold">Mua source rõ ràng từ lúc tạo đơn đến lúc tải file</h2>
+            <p className="mt-4 text-sm leading-6 text-muted-foreground">
+              Website đã có trang hướng dẫn, license, FAQ, trạng thái hệ thống và khu vực review để khách tự kiểm tra trước khi mua.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link to="/guide">
+                <Button className="bg-gradient-primary">
+                  Xem hướng dẫn <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/faq">
+                <Button variant="outline">FAQ</Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {purchaseSteps.map((step) => (
+              <div key={step.title} className="rounded-xl border border-border bg-gradient-card p-5">
+                <div className="mb-4 grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
+                  <step.icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-display font-semibold">{step.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="container pb-20">
+        <div className="grid gap-5 md:grid-cols-3">
+          {trustLinks.map((item) => (
+            <Link
+              key={item.title}
+              to={item.to}
+              className="rounded-xl border border-border bg-gradient-card p-6 transition-colors hover:border-primary/50"
+            >
+              <item.icon className="h-7 w-7 text-primary" />
+              <h3 className="mt-5 font-display text-xl font-semibold">{item.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
+              <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                Mở trang <ArrowRight className="h-4 w-4" />
+              </div>
+            </Link>
           ))}
         </div>
       </section>

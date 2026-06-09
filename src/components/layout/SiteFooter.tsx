@@ -27,18 +27,18 @@ export const SiteFooter = () => (
             </Link>
           </li>
           <li>
-            <Link to="/catalog?cat=ui-kit" className="transition-colors hover:text-foreground">
-              UI Kits
+            <Link to="/demo-gallery" className="transition-colors hover:text-foreground">
+              Demo gallery
             </Link>
           </li>
           <li>
-            <Link to="/catalog?cat=template" className="transition-colors hover:text-foreground">
-              Templates
+            <Link to="/blog" className="transition-colors hover:text-foreground">
+              Blog & tutorial
             </Link>
           </li>
           <li>
-            <Link to="/catalog?cat=effect" className="transition-colors hover:text-foreground">
-              Effects
+            <Link to="/changelog" className="transition-colors hover:text-foreground">
+              Changelog
             </Link>
           </li>
         </ul>
@@ -62,11 +62,38 @@ export const SiteFooter = () => (
               License keys
             </Link>
           </li>
+          <li>
+            <Link to="/guide" className="transition-colors hover:text-foreground">
+              Hướng dẫn mua hàng
+            </Link>
+          </li>
+          <li>
+            <Link to="/license" className="transition-colors hover:text-foreground">
+              License
+            </Link>
+          </li>
         </ul>
       </div>
 
       <div>
-        <h4 className="mb-3 text-sm font-semibold">Cộng đồng</h4>
+        <h4 className="mb-3 text-sm font-semibold">Hỗ trợ</h4>
+        <ul className="mb-4 space-y-2 text-sm text-muted-foreground">
+          <li>
+            <Link to="/faq" className="transition-colors hover:text-foreground">
+              FAQ
+            </Link>
+          </li>
+          <li>
+            <Link to="/status" className="transition-colors hover:text-foreground">
+              Trạng thái hệ thống
+            </Link>
+          </li>
+          <li>
+            <Link to="/affiliate" className="transition-colors hover:text-foreground">
+              Affiliate
+            </Link>
+          </li>
+        </ul>
         <div className="flex gap-2 text-muted-foreground">
           <a
             href="/"

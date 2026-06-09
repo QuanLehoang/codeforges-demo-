@@ -28,6 +28,7 @@ import {
 const links = [
   { to: "/", label: "Trang chủ" },
   { to: "/catalog", label: "Danh mục" },
+  { to: "/guide", label: "Hướng dẫn" },
 ];
 
 const DiscordIcon = ({ className }: { className?: string }) => (
