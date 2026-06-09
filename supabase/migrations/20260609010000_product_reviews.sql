@@ -33,7 +33,7 @@ with check (
     join public.order_items oi on oi.order_id = o.id
     where o.user_id = auth.uid()
       and o.status = 'paid'
-      and oi.product_id = product_reviews.product_id
+      and oi.product_id = product_reviews.product_id::text
   )
 );
 
@@ -49,7 +49,7 @@ with check (
     join public.order_items oi on oi.order_id = o.id
     where o.user_id = auth.uid()
       and o.status = 'paid'
-      and oi.product_id = product_reviews.product_id
+      and oi.product_id = product_reviews.product_id::text
   )
 );
 

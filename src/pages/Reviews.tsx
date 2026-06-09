@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Loader2, Lock, PackageCheck, Send, Star } from "lucide-react";
+import { Loader2, Lock, PackageCheck, Send, Star, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -25,24 +25,6 @@ type Review = {
   } | null;
 };
 
-const sampleReviews = [
-  {
-    name: "nguyen***@gmail.com",
-    product: "Dashboard UI Kit",
-    text: "Source sạch, dễ sửa và đúng phong cách dark tech mình cần.",
-  },
-  {
-    name: "devteam***@gmail.com",
-    product: "Landing Template",
-    text: "Mua xong dùng được ngay, tiết kiệm nhiều thời gian dựng layout.",
-  },
-  {
-    name: "agency***@gmail.com",
-    product: "WebGL Effects Pack",
-    text: "Hiệu ứng đẹp, có fallback nên không sợ máy yếu bị lag.",
-  },
-];
-
 const displayDate = (date: string) =>
   new Intl.DateTimeFormat("vi-VN", {
     day: "2-digit",
@@ -51,7 +33,7 @@ const displayDate = (date: string) =>
   }).format(new Date(date));
 
 const Reviews = () => {
-  const { user, profile, loading: authLoading } = useAuth();
+  const { user, profile, isAdmin, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [purchasedProducts, setPurchasedProducts] = useState<PurchasedProduct[]>([]);
@@ -60,6 +42,7 @@ const Reviews = () => {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const canReview = purchasedProducts.length > 0;
 
@@ -73,7 +56,7 @@ const Reviews = () => {
       .from("product_reviews")
       .select("id, user_id, product_id, rating, comment, created_at, products(title, slug)")
       .order("created_at", { ascending: false })
-      .limit(30);
+      .limit(50);
 
     if (error) {
       toast({ title: "Lỗi tải đánh giá", description: error.message, variant: "destructive" });
@@ -155,6 +138,27 @@ const Reviews = () => {
     setComment("");
     setRating(5);
     await loadReviews();
+  };
+
+  const handleDeleteReview = async (review: Review) => {
+    if (!user) return;
+    const canDelete = isAdmin || review.user_id === user.id;
+    if (!canDelete) return;
+
+    const ok = window.confirm("Bạn có chắc muốn xóa đánh giá này không?");
+    if (!ok) return;
+
+    setDeletingId(review.id);
+    const { error } = await supabase.from("product_reviews").delete().eq("id", review.id);
+    setDeletingId(null);
+
+    if (error) {
+      toast({ title: "Xóa đánh giá thất bại", description: error.message, variant: "destructive" });
+      return;
+    }
+
+    setReviews((prev) => prev.filter((item) => item.id !== review.id));
+    toast({ title: "Đã xóa đánh giá" });
   };
 
   return (
@@ -266,22 +270,23 @@ const Reviews = () => {
         <div className="rounded-xl border border-border bg-gradient-card p-6">
           <h2 className="font-display text-2xl font-semibold">Đánh giá mới nhất</h2>
           <div className="mt-6 space-y-4">
-            {reviews.length === 0
-              ? sampleReviews.map((review) => (
-                  <div key={review.name} className="rounded-lg border border-border bg-background/40 p-5">
-                    <div className="mb-4 flex gap-1 text-primary">
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <Star key={index} className="h-4 w-4 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-sm leading-6 text-muted-foreground">"{review.text}"</p>
-                    <div className="mt-4 border-t border-border pt-4">
-                      <div className="font-semibold">{review.name}</div>
-                      <div className="mt-1 font-mono text-xs uppercase text-primary">@{review.product}</div>
-                    </div>
-                  </div>
-                ))
-              : reviews.map((review) => (
+            {loading ? (
+              <div className="grid place-items-center rounded-lg border border-dashed border-border p-10 text-muted-foreground">
+                <Loader2 className="h-5 w-5 animate-spin" />
+              </div>
+            ) : reviews.length === 0 ? (
+              <div className="rounded-lg border border-dashed border-border bg-background/40 p-8 text-center">
+                <Star className="mx-auto h-8 w-8 text-primary" />
+                <h3 className="mt-4 font-semibold">Chưa có đánh giá thật</h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Khi khách đã mua sản phẩm gửi đánh giá, bình luận sẽ xuất hiện tại đây.
+                </p>
+              </div>
+            ) : (
+              reviews.map((review) => {
+                const canDelete = !!user && (isAdmin || review.user_id === user.id);
+
+                return (
                   <div key={review.id} className="rounded-lg border border-border bg-background/40 p-5">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <div className="flex gap-1 text-primary">
@@ -289,7 +294,22 @@ const Reviews = () => {
                           <Star key={index} className={`h-4 w-4 ${index < review.rating ? "fill-current" : ""}`} />
                         ))}
                       </div>
-                      <span className="font-mono text-xs text-muted-foreground">{displayDate(review.created_at)}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs text-muted-foreground">{displayDate(review.created_at)}</span>
+                        {canDelete && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
+                            onClick={() => handleDeleteReview(review)}
+                            disabled={deletingId === review.id}
+                            aria-label="Xóa đánh giá"
+                          >
+                            {deletingId === review.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                          </Button>
+                        )}
+                      </div>
                     </div>
                     <p className="text-sm leading-6 text-muted-foreground">"{review.comment}"</p>
                     <div className="mt-4 border-t border-border pt-4">
@@ -301,7 +321,9 @@ const Reviews = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                );
+              })
+            )}
           </div>
         </div>
       </div>
