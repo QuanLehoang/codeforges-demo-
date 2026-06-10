@@ -1,0 +1,21 @@
+services:
+  codeforges-discord-bot:
+    build:
+      context: ./discord-bot
+      dockerfile: Dockerfile
+    container_name: codeforges-discord-bot
+    restart: unless-stopped
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      DISCORD_CHANNEL_ID: ${DISCORD_CHANNEL_ID}
+      DISCORD_PAYMENT_CHANNEL_ID: ${DISCORD_PAYMENT_CHANNEL_ID}
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      POLL_SECONDS: ${POLL_SECONDS:-60}
+      ANNOUNCE_EXISTING: ${ANNOUNCE_EXISTING:-false}
+      SEND_STARTUP_SUMMARY: ${SEND_STARTUP_SUMMARY:-true}
+    volumes:
+      - codeforges_discord_bot_data:/app/data
+
+volumes:
+  codeforges_discord_bot_data:
